@@ -70,7 +70,7 @@ const intersectionCallback = (entries) => {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+const init = () => {
     const observer = new IntersectionObserver(intersectionCallback, {
         root: null, // avoiding 'root' or setting it to 'null' sets it to default value: viewport
         rootMargin: '0px',
@@ -81,4 +81,13 @@ document.addEventListener("DOMContentLoaded", function () {
     for (const item of items) {
         observer.observe(item);
     }
-});
+}
+
+// check if dom is loaded
+if (document.readyState !== 'loading') {
+    init();
+} else {
+    document.addEventListener('DOMContentLoaded', function () {
+        init();
+    });
+}
