@@ -19,7 +19,6 @@ function formSubmit(e) {
             name: document.querySelector('input[name="name"]').value,
             email: document.querySelector('input[name="email"]').value,
             message: document.querySelector('textarea[name="message"]').value,
-            "g-recaptcha-response": grecaptcha.getResponse()
         }),
     })
         .then(function (response) {
