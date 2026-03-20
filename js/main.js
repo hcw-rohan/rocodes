@@ -280,6 +280,25 @@ if (document.readyState !== "loading") {
   });
 }
 
+// Scroll tech-chart to the right on mobile
+function scrollTechChartToRightIfMobile() {
+  const chart = document.getElementById("tech-chart");
+  if (!chart) return;
+  // Match CSS mobile breakpoint (less than 740px)
+  if (window.innerWidth < 740) {
+    // Wait for layout
+    setTimeout(() => {
+      chart.scrollLeft = chart.scrollWidth;
+    }, 0);
+  }
+}
+
+if (document.readyState !== "loading") {
+  scrollTechChartToRightIfMobile();
+} else {
+  document.addEventListener("DOMContentLoaded", scrollTechChartToRightIfMobile);
+}
+
 // --- Stuttery Scroll for # Links ---
 function steppedScrollTo(targetY, steps = 8, stepTime = 50) {
   const startY = window.scrollY;

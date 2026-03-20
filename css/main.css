@@ -212,6 +212,13 @@ main {
     padding: 0.5em;
     position: absolute;
     opacity: 0;
+    text-align: right;
+}
+
+@media (min-width: 740px) {
+    #tech-chart .tech-block {
+        text-align: left;
+    }
 }
 
 #tech-chart .tech-block.show {
