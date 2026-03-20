@@ -194,10 +194,21 @@ function generatePixelGrids() {
 }
 
 let resizeTimeout;
+
+// Only regenerate pixel grids if width changes
+let lastPixelGridWidth = null;
 window.addEventListener("resize", () => {
   clearTimeout(resizeTimeout);
-  clearPixelGrids();
-  resizeTimeout = setTimeout(generatePixelGrids, 250);
+  const canvases = document.querySelectorAll(".pixel-grid");
+  if (canvases.length === 0) return;
+  // Use first canvas's parent as reference
+  const container = canvases[0].parentElement;
+  const width = Math.floor(container.offsetWidth / PIXEL_SIZE) * PIXEL_SIZE;
+  if (width !== lastPixelGridWidth) {
+    lastPixelGridWidth = width;
+    clearPixelGrids();
+    resizeTimeout = setTimeout(generatePixelGrids, 250);
+  }
 });
 
 if (document.readyState !== "loading") generatePixelGrids();
