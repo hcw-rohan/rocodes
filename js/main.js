@@ -72,10 +72,10 @@ function randomColor() {
   return `hsl(${h},${s}%,${l}%)`;
 }
 
-function generateGrid(cols, direction = 'ltr') {
+function generateGrid(cols, rows = ROWS, direction = 'ltr') {
   const grid = [];
   const center = (cols - 1) / 2;
-  for (let y = 0; y < ROWS; y++) {
+  for (let y = 0; y < rows; y++) {
     const row = [];
     for (let x = 0; x < cols; x++) {
       let blankProb;
@@ -96,7 +96,7 @@ function generateGrid(cols, direction = 'ltr') {
   return grid;
 }
 
-function setupRevealOrder(grid, cols, direction = 'ltr') {
+function setupRevealOrder(grid, cols, rows = ROWS, direction = 'ltr') {
   // direction: 'ltr', 'rtl', 'center'
   let revealOrder = [];
   let colIndices = Array.from({length: cols}, (_, i) => i);
@@ -108,7 +108,7 @@ function setupRevealOrder(grid, cols, direction = 'ltr') {
   }
   for (const x of colIndices) {
     const colPixels = [];
-    for (let y = 0; y < ROWS; y++) {
+    for (let y = 0; y < rows; y++) {
       if (grid[y][x].visible) {
         colPixels.push([y, x]);
       }
@@ -167,53 +167,66 @@ function generatePixelGrids() {
     const container = canvas.parentElement;
     const width = Math.floor(container.offsetWidth / PIXEL_SIZE) * PIXEL_SIZE;
     canvas.width = width;
-    canvas.height = ROWS * PIXEL_SIZE;
+    const rows = parseInt(canvas.getAttribute('data-rows')) || ROWS;
+    canvas.height = rows * PIXEL_SIZE;
     const cols = Math.floor(width / PIXEL_SIZE);
     const directionAttr = canvas.getAttribute('data-direction');
     let direction = 'ltr';
     if (directionAttr === 'rtl') direction = 'rtl';
     else if (directionAttr === 'center') direction = 'center';
-    const grid = generateGrid(cols, direction);
-    const revealOrder = setupRevealOrder(grid, cols, direction);
+    const grid = generateGrid(cols, rows, direction);
+    const revealOrder = setupRevealOrder(grid, cols, rows, direction);
     drawGrid(canvas, grid, revealOrder, 0, cols);
     // Only animate when in viewport
     if (!canvas._pixelGridObserver) {
+      canvas._pixelGridAnimated = false;
       canvas._pixelGridObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
           if (entry.isIntersecting && !canvas._pixelGridAnimated) {
-            animatePixelGrid(canvas, grid, revealOrder, cols);
             canvas._pixelGridAnimated = true;
+            animatePixelGrid(canvas, grid, revealOrder, cols);
             observer.unobserve(canvas);
+            observer.disconnect();
           }
         });
-      }, { threshold: 0.1 });
-      canvas._pixelGridAnimated = false;
+      }, { threshold: 0 });
       canvas._pixelGridObserver.observe(canvas);
+    }
+
+    // Fallback for mobile browsers that may delay the initial intersection callback
+    const rect = canvas.getBoundingClientRect();
+    if (!canvas._pixelGridAnimated && rect.top < window.innerHeight && rect.bottom > 0) {
+      canvas._pixelGridAnimated = true;
+      animatePixelGrid(canvas, grid, revealOrder, cols);
+      if (canvas._pixelGridObserver) {
+        canvas._pixelGridObserver.unobserve(canvas);
+        canvas._pixelGridObserver.disconnect();
+      }
     }
   });
 }
 
 let resizeTimeout;
 
-// Only regenerate pixel grids if width changes
-let lastPixelGridWidth = null;
+// Only regenerate pixel grids if the window width changes significantly
+let lastWindowWidth = window.innerWidth;
 window.addEventListener("resize", () => {
+  console.log('resize');
   clearTimeout(resizeTimeout);
   const canvases = document.querySelectorAll(".pixel-grid");
   if (canvases.length === 0) return;
+  // Only proceed if window width changed significantly (ignore minor changes from mobile UI)
+  if (Math.abs(window.innerWidth - lastWindowWidth) < 10) return;
+  lastWindowWidth = window.innerWidth;
   // Use first canvas's parent as reference
   const container = canvases[0].parentElement;
-  const width = Math.floor(container.offsetWidth / PIXEL_SIZE) * PIXEL_SIZE;
-  if (width !== lastPixelGridWidth) {
-    lastPixelGridWidth = width;
+  const cols = Math.floor(container.offsetWidth / PIXEL_SIZE);
+  if (cols !== lastPixelGridCols) {
+    lastPixelGridCols = cols;
     clearPixelGrids();
     resizeTimeout = setTimeout(generatePixelGrids, 250);
   }
 });
-
-if (document.readyState !== "loading") generatePixelGrids();
-
-
 
 /* Tech table */
 const techs = document.getElementsByClassName("tech-block");
@@ -258,6 +271,8 @@ const init = () => {
     rootMargin: "0px",
     threshold: 0,
   });
+
+  generatePixelGrids();
 
   const items = document.querySelectorAll(".tech-block");
   for (const item of items) {

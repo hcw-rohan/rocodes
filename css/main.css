@@ -113,7 +113,15 @@ b {
 
 section,
 main {
-    padding: 5rem 0;
+    padding: 2rem 0;
+}
+
+@media (min-width: 700px) {
+
+    section,
+    main {
+        padding: 5rem 0;
+    }
 }
 
 .boxed {
