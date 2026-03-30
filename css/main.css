@@ -144,10 +144,11 @@ main {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 1rem;
 }
 
-.main-header h1,
-.main-header div {
+.main-header .title h1,
+.main-header .title>div {
     font-size: 1.625rem;
     margin: 0;
 }
@@ -155,6 +156,33 @@ main {
 .main-header .subtitle {
     color: #ED006B;
     font-size: 1.625rem;
+}
+
+.main-header .title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.header-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-links nav {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.header-links nav a {
+    color: #E0E0E0;
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+
+.header-links nav a[aria-current="page"] {
+    color: #ED006B;
 }
 
 .main-header .github a {
@@ -167,10 +195,26 @@ main {
 
 @media screen and (min-width:480px) {
 
-    .main-header h1,
-    .main-header div,
+    .main-header .title h1,
+    .main-header .title>div,
     .main-header .subtitle {
         font-size: 2rem;
+    }
+
+    .header-links nav a {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 620px) {
+    .main-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-links {
+        width: 100%;
+        justify-content: space-between;
     }
 }
 
@@ -446,7 +490,8 @@ textarea {
     border: none;
     color: #E0E0E0;
     font-family: 'Lato', sans-serif;
-    text-transform: uppercase;
+    font-size: 1rem;
+    font-weight: 900;
 }
 
 button,
@@ -455,11 +500,13 @@ button,
     border: none;
     color: #E0E0E0;
     font-family: 'Lato', sans-serif;
+    font-weight: 900;
     padding: 0.5em 2em;
     text-transform: uppercase;
     transition: opacity 0.3s;
     cursor: pointer;
     text-decoration: none;
+    font-size: 1rem;
 }
 
 button:hover,
@@ -498,4 +545,193 @@ article .post-content {
     font-weight: 300;
     font-size: 1.25rem;
     text-transform: none;
+}
+
+.client-area {
+    min-height: calc(100vh - 8rem);
+}
+
+.client-area h1 {
+    color: #ED006B;
+    font-size: 3rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.client-area-header {
+    max-width: 700px;
+}
+
+.client-area-header p {
+    margin-top: 0;
+}
+
+.client-panel {
+    background: #1d1d1d;
+    border: 1px solid #3a3a3a;
+    box-shadow: 0.75rem 0.75rem 0 #0c0c0c;
+    padding: 1.5rem;
+}
+
+.client-login-form,
+.client-meta {
+    max-width: 540px;
+}
+
+.client-login-form button[disabled] {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.notice {
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #ED006B;
+    background: #1d1d1d;
+}
+
+.notice-success {
+    border-left-color: #53c26b;
+}
+
+.notice-error {
+    border-left-color: #ED006B;
+}
+
+.plan-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.plan-card {
+    border: 1px solid #454545;
+    padding: 1.25rem;
+    background: #131313;
+}
+
+.plan-card h3 {
+    color: #ED006B;
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+}
+
+.service-details {
+    margin: 0;
+    padding: 0;
+}
+
+.service-row {
+    border-top: 1px solid #2d2d2d;
+    padding: 0.65rem 0;
+}
+
+.service-row:first-child {
+    border-top: none;
+    padding-top: 0;
+}
+
+.service-row dt {
+    font-size: 0.8rem;
+    color: #a8a8a8;
+}
+
+.service-row dd {
+    margin: 0.2rem 0 0;
+    color: #E0E0E0;
+    font-size: 1.05rem;
+    word-break: break-word;
+}
+
+.maintenance-heading {
+    color: #ED006B;
+    margin: 1.5rem 0 0.5rem;
+    font-size: 1.2rem;
+}
+
+.maintenance-tasks {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.maintenance-tasks li {
+    text-transform: none;
+    margin: 0.3rem 0;
+}
+
+.plan-card p,
+.client-meta p,
+.client-panel p {
+    text-transform: none;
+}
+
+.plan-card-empty {
+    margin: 2rem 0;
+}
+
+.contact-accordion {
+    margin-top: 2rem;
+    border-top: 1px solid #3a3a3a;
+    padding-top: 1.5rem;
+}
+
+.contact-accordion summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.contact-accordion summary::-webkit-details-marker {
+    display: none;
+}
+
+.contact-accordion summary h3 {
+    display: inline;
+    color: #ED006B;
+    font-size: 1.5rem;
+}
+
+.contact-accordion summary::after {
+    content: '+';
+    float: right;
+    font-size: 1.5rem;
+    color: #ED006B;
+    line-height: 1.2;
+    transition: transform 0.2s;
+}
+
+.contact-accordion[open] summary::after {
+    content: '−';
+}
+
+.contact-accordion .content {
+    margin-top: 1.25rem;
+}
+
+.account-contact-form.submitting button,
+.account-contact-form.submitted button {
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.contact-notice {
+    margin-top: 1rem;
+}
+
+.contact-notice:empty {
+    display: none;
+}
+
+@media screen and (min-width: 720px) {
+    .plan-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .client-panel {
+        padding: 2rem;
+    }
 }

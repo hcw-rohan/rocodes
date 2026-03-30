@@ -43,10 +43,12 @@
         <h1>Rohan Latimer</h1>
         <div role="doc-subtitle" class="subtitle">Software Developer</div>
       </div>
-      <div class="github">
-        <a href="https://github.com/hcw-rohan" target="_blank"
-          ><img src="img/github.png" width="32" height="32"
-        /></a>
+      <div class="header-links">
+        <div class="github">
+          <a href="https://github.com/hcw-rohan" target="_blank" rel="noopener"
+            ><img src="img/github.png" width="32" height="32" alt="GitHub"
+          /></a>
+        </div>
       </div>
     </header>
 
@@ -416,13 +418,12 @@
       <h2>Get in touch</h2>
       <form method="POST" id="contact-form">
         <label for="name">Name</label>
-        <input type="text" id="name" name="name" placeholder="Name" required />
+        <input type="text" id="name" name="name" required />
         <label for="email">Email</label>
         <input
           type="email"
           id="email"
           name="email"
-          placeholder="Email"
           required
         />
         <input
@@ -436,13 +437,14 @@
         <textarea
           id="message"
           name="message"
-          placeholder="Message"
           required
           rows="4"
         ></textarea>
         <button type="submit">Send</button>
       </form>
     </section>
+
+    <p class="boxed">Looking for the <a href="/account">customer area</a>?</p>
     <script src="js/Accordion.js"></script>
     <script src="js/main.js?v=1.1.4" async></script>
   </body>
