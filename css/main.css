@@ -64,13 +64,21 @@ body {
     font-weight: 900;
     margin: 0;
     padding: 0.5rem;
-    text-transform: uppercase;
 }
 
 @media screen and (min-width:480px) {
     body {
         padding: 1rem;
     }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-transform: uppercase;
 }
 
 h2 {
@@ -102,7 +110,8 @@ a {
     color: #ED006B;
 }
 
-p {
+p,
+ul {
     font-size: 1.5rem;
 }
 
@@ -156,6 +165,7 @@ main {
 .main-header .subtitle {
     color: #ED006B;
     font-size: 1.625rem;
+    text-transform: uppercase;
 }
 
 .main-header .title a {
@@ -265,6 +275,7 @@ main {
     position: absolute;
     opacity: 0;
     text-align: right;
+    text-transform: uppercase;
 }
 
 @media (min-width: 740px) {
@@ -392,6 +403,11 @@ figure img {
     gap: 2rem;
     margin-top: 5rem;
     width: 100%;
+    text-transform: uppercase;
+}
+
+.grid ul {
+    font-size: 1rem;
 }
 
 @media screen and (min-width: 900px) {
